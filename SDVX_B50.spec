@@ -1,10 +1,13 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 a = Analysis(
-    ['gen_b50.py'],
-    pathex=[],
+    ['src/gen_b50.py'],
+    pathex=['src'],
     binaries=[],
-    datas=[('msyh.ttc', '.')],
+    datas=[
+        ('assets/fonts/msyh.ttc', 'assets/fonts'),
+        ('assets/fonts/msyh.ttc', '.'),
+    ],
     hiddenimports=['PIL', 'PIL._imagingtk', 'PIL._tkinter_finder'],
     hookspath=[],
     hooksconfig={},
