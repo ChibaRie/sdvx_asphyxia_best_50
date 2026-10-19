@@ -20,6 +20,7 @@ a = Analysis(
         'sqlite3', 'bz2', 'lzma', 'tarfile',
         'socket', 'ssl', 'selectors',
         'PIL._tkinter_finder', 'PIL.ImageQt', 'PIL.ImageTk',
+        'numpy', 'scipy', 'mkl', 'pandas', 'matplotlib',
     ],
     noarchive=False,
     optimize=0,
