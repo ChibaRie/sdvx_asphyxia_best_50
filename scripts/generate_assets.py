@@ -31,12 +31,15 @@ def generate_assets() -> None:
     font_path = os.path.join(assets_dir, "fonts", "msyh.ttc")
 
     # Render card-grid JPEG
-    render_png(rows, player_name, total_vf, out_b50, skill=skill, font_path=font_path)
+    render_png(
+        rows, player_name, total_vf, out_b50,
+        skill=skill, font_path=font_path, source_label="DEMO DATA",
+    )
     print(f"Generated {out_b50} ({os.path.getsize(out_b50)} bytes)")
 
-    # Render preview thumbnail
+    # Render preview thumbnail (1200 px keeps the small labels readable)
     with Image.open(out_b50) as im:
-        target_w = 900
+        target_w = 1200
         target_h = int(im.height * (target_w / im.width))
         sm = im.resize((target_w, target_h), Image.Resampling.LANCZOS)
         sm.save(out_preview, "JPEG", quality=85, optimize=True, progressive=True)

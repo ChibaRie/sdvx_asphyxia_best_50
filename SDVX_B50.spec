@@ -7,6 +7,13 @@ a = Analysis(
     datas=[
         ('assets/fonts/msyh.ttc', 'assets/fonts'),
         ('assets/fonts/msyh.ttc', '.'),
+        ('assets/fonts/BarlowCondensed-Regular.ttf', 'assets/fonts'),
+        ('assets/fonts/BarlowCondensed-SemiBold.ttf', 'assets/fonts'),
+        ('assets/fonts/BarlowCondensed-Bold.ttf', 'assets/fonts'),
+        ('assets/fonts/BarlowCondensed-ExtraBold.ttf', 'assets/fonts'),
+        ('assets/fonts/OFL-BarlowCondensed.txt', 'assets/fonts'),
+        ('assets/backgrounds/sdvx_exceed_gear_key.jpg', 'assets/backgrounds'),
+        ('assets/backgrounds/README.md', 'assets/backgrounds'),
     ],
     hiddenimports=['PIL', 'PIL._imagingtk', 'PIL._tkinter_finder'],
     hookspath=[],

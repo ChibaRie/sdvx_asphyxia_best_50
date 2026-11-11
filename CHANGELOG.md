@@ -3,6 +3,20 @@
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与
 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [1.4.0] - 2026-11-11
+
+### 视觉重构 (VOLFORCE Afterglow)
+
+- **1600px 结算终端海报**：2× 超采样后缩放，渐进式 JPEG（Quality 90，约 750KB）；从等权卡片阵列升级为 **Hero → Top 3 领奖台 → #04–#50 跑表 → 数据分布面板** 的四级层次。
+- **官方 EXCEED GEAR 主视觉入画**：新增可选背景资产 `assets/backgrounds/sdvx_exceed_gear_key.jpg`，带来源与版权说明；缺失时自动降级为原创的 SDVX 风格 ∇ 棱镜 + 激光背景。
+- **本地 Barlow Condensed 数字体系**：新增 OFL 字体，用于 VOLFORCE、名次、分数与统计；CJK 标题继续使用微软雅黑。
+- **VOLFORCE 偏差频谱**：50 根真实数据柱围绕平均 VF 上下起伏，前三名金 / 冰蓝 / 铜橙高亮，兼具数据图与声波意象。
+- **Top 3 领奖台**：#01 金、#02 冰蓝、#03 铜橙三张大卡，专属描边、名次徽章与 VF 贡献条；#04–#10 用青色侧标延续层级。
+- **真实数据分布面板**：GRADE 构成、难度构成与 Top 3 VF 占比，自动填入最后一行空位，全部由当前记录计算。
+- **卡片工艺升级**：298×128 卡、100px 圆角封面、两行曲名、10px 难度/GRADE 徽章、24px VF 数字、底部贡献条与切角面板。
+- **工程**：拆分为 `render_theme.py`（调色/字体/背景原语）与 `render_png.py`（布局/组件）；PyInstaller 打包 Barlow 字体与背景；测试从 39 项增至 44 项（新增布局、空数据、缺背景降级、VF 占比推导）。
+- **文档**：README 输出规格、素材版权与项目结构同步更新；`--help` 与 Demo 输出标注 1600px。
+
 ## [1.3.0] - 2026-10-19
 
 ### 视觉与界面重构 (Cybernetic Obsidian Aesthetic)

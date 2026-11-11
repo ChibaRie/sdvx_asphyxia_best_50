@@ -57,7 +57,7 @@ Default Paths:
   out_dir:         ./b50_output/
 
 Outputs:
-  ./b50_output/b50.jpg   -> 1200px Cyber-styled Best 50 Card Grid JPEG (~400KB)
+  ./b50_output/b50.jpg   -> 1600px SDVX results-terminal Best 50 poster (~750KB)
   ./b50_output/b50.html  -> Responsive interactive HTML dashboard with search & filter
 """
     print(help_text.strip())
@@ -74,7 +74,10 @@ def run_demo(out_dir: str, font_path: str) -> None:
     jpg_path = os.path.join(out_dir, "b50.jpg")
     htm_path = os.path.join(out_dir, "b50.html")
 
-    render_png(rows, player, total_vf, jpg_path, skill=skill, font_path=font_path)
+    render_png(
+        rows, player, total_vf, jpg_path,
+        skill=skill, font_path=font_path, source_label="DEMO DATA",
+    )
     render_html(rows, player, total_vf, htm_path, skill=skill)
 
     print(f"[OK] Player: {player} | Tracks: {len(rows)} | Total VF: {total_vf}")

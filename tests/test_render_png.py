@@ -1,7 +1,7 @@
 import os
 
 from PIL import Image
-from render_png import format_vf, render_png
+from render_png import _build_stats, _layout, format_vf, render_png
 
 
 def test_render_png_card_grid_no_overlap(tmp_path):
@@ -16,9 +16,9 @@ def test_render_png_card_grid_no_overlap(tmp_path):
     out = tmp_path / "b50.png"
     render_png(rows, "Tester", 11.184, str(out))
     img = Image.open(out)
-    assert img.width == 1200
-    # 高度 = 玩家条 80 + 上边距 20 + 10*(88+15) - 15 + 下边距 20 = 1135
-    assert 1100 <= img.height < 1400
+    assert img.width == 1600
+    # Hero + podium + 10 runlist rows + summary panel + footer
+    assert 2000 <= img.height < 2400
     img.close()
 
 
@@ -32,7 +32,7 @@ def test_render_png_renders_exscore(tmp_path):
     render_png(rows, "Tester", 1.0, str(out))
     img = Image.open(out)
     # EX SCORE 视觉断言困难，仅验证无报错且尺寸正确
-    assert img.width == 1200
+    assert img.width == 1600
     img.close()
 
 
@@ -45,7 +45,7 @@ def test_render_png_long_title_does_not_crash(tmp_path):
     out = tmp_path / "b50.png"
     render_png(rows, "Tester", 5.0, str(out))
     img = Image.open(out)
-    assert img.width == 1200
+    assert img.width == 1600
     img.close()
 
 
@@ -58,7 +58,7 @@ def test_render_png_with_skill_no_crash(tmp_path):
     out = tmp_path / "b50.png"
     render_png(rows, "Tester", 1.0, str(out), skill="蒼穹")
     img = Image.open(out)
-    assert img.width == 1200
+    assert img.width == 1600
     img.close()
 
 
@@ -72,9 +72,8 @@ def test_render_png_outputs_jpeg(tmp_path):
     render_png(rows, "Tester", 11.0, str(out))
     img = Image.open(out)
     assert img.format == "JPEG"
-    assert img.width == 1200
+    assert img.width == 1600
     img.close()
-    # JPEG 远小于原 5.2MB PNG，即便有真实封面也不应超过 2MB
     assert os.path.getsize(str(out)) < 2_000_000
 
 
@@ -95,5 +94,53 @@ def test_render_png_with_vf_pct_no_crash(tmp_path):
     render_png(rows, "Tester", 1.0, str(out))
     img = Image.open(out)
     assert img.format == "JPEG"
-    assert img.width == 1200
+    assert img.width == 1600
+    img.close()
+
+
+def test_layout_50_tracks_uses_podium_and_inline_summary():
+    layout = _layout(50)
+    assert layout["podium_count"] == 3
+    assert layout["run_rows"] == 10
+    assert layout["summary_mode"] == "inline"
+    assert layout["summary_slots"] == 3
+
+
+def test_layout_one_track_skips_runlist():
+    layout = _layout(1)
+    assert layout["podium_count"] == 1
+    assert layout["run_rows"] == 0
+    assert layout["summary_mode"] is None
+
+
+def test_build_stats_derives_missing_vf_share():
+    rows = [{"volforce": 300.0}, {"volforce": 100.0}]
+    stats = _build_stats(rows)
+    assert stats["pcts"] == [75.0, 25.0]
+    assert stats["top3_share"] == 100.0
+    assert stats["avg_vf"] == 200.0
+
+
+def test_render_png_empty_rows_does_not_crash(tmp_path):
+    out = tmp_path / "b50.jpg"
+    render_png([], "Tester", 0.0, str(out))
+    img = Image.open(out)
+    assert img.width == 1600
+    assert img.format == "JPEG"
+    img.close()
+
+
+def test_render_png_missing_background_falls_back(tmp_path):
+    rows = [{
+        "mid": 1, "type": 0, "title": "T", "label": "NOV", "level": "5",
+        "score": 100, "exscore": 90, "volforce": 10.0, "clear": 6, "grade": 10,
+        "clear_name": "PUC", "grade_name": "S", "cover_path": None,
+    }]
+    out = tmp_path / "b50.jpg"
+    render_png(
+        rows, "Tester", 1.0, str(out),
+        background_path=str(tmp_path / "missing.jpg"),
+    )
+    img = Image.open(out)
+    assert img.width == 1600
     img.close()
